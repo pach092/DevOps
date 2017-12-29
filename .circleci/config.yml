@@ -2,13 +2,13 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
+version:2
 jobs:
   build:
     docker:
       # specify the version you desire here
       - image: circleci/node:7.10
-      
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -17,7 +17,10 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - setup_remote_docker:
+          version:17.09.0-ce
       - checkout
+      - run: docker build -t platzi .
 
       # Download and cache dependencies
       - restore_cache:
@@ -32,8 +35,6 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
+
       # run tests!
       - run: yarn test
-
-
